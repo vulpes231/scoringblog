@@ -1,28 +1,42 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { nanoid } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
 import { postAdded } from './postsSlice';
+import { selectAllUsers } from '../users/usersSlice';
+
 
 const AddPostForm = () => {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
     const dispatch = useDispatch();
 
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [userId, setUserId] = useState('');
+
+    const users = useSelector(selectAllUsers);
+
+    
+
     const onTitleChange = e => setTitle(e.target.value);
+    const onAuthorChange = e => setUserId(e.target.value);
     const onContentChange = e => setContent(e.target.value);
 
     const savePost = () => {
         if (title && content) {
             dispatch(
-                postAdded({
-                    
-                })
+                postAdded(title, content, userId)
             );
 
             setTitle('')
             setContent('')
         }
     };
+
+    const userOptions = users.map(user => (
+        <option key={user.id} value={user.id}>
+            {user.name}
+        </option>
+    ));
+
+    const canSave = Boolean(title) && Boolean(content) && Boolean(userId)
 
 
   return (
@@ -41,6 +55,18 @@ const AddPostForm = () => {
                         onChange={onTitleChange} 
                     />
                 </div>
+                <div className='flex flex-col'>
+                    <label htmlFor='postAuthor'>Author </label>
+                    <select 
+                        id='postAuthor' 
+                        value={userId} 
+                        onChange={onAuthorChange}
+                        className='outline-none rounded-md text-slate-800'
+                    >
+                        <option value=""></option>
+                        {userOptions}
+                    </select>
+                </div>
                <div className='flex flex-col'>
                     <label htmlFor='postTitle'>Content </label>
                     <textarea 
@@ -53,8 +79,10 @@ const AddPostForm = () => {
                     </textarea>
                </div>
                 <button 
-                    className='border p-2 rounded-lg hover:bg-slate-400 hover:text-slate-800 mt-4 mb-4' type='button' 
+                    className={canSave ? 'border p-2 rounded-lg mt-4 mb-4' : ' p-2 rounded-lg bg-slate-400 mt-4 mb-4'} 
+                    type='button' 
                     onClick={savePost}
+                    disabled={!canSave}
                 >
                     Save Post
                 </button>
