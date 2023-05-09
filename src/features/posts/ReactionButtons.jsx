@@ -30,6 +30,7 @@ const ReactionButtons = ({post}) => {
           )
     })
     return <div className='cursor-pointer'>{reactionBtns}</div>
+    
 };
 
 export default ReactionButtons;
