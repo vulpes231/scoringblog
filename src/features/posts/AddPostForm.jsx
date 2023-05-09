@@ -16,9 +16,11 @@ const AddPostForm = () => {
     
 
     const onTitleChange = e => setTitle(e.target.value);
-    const onAuthorChange = e => setUserId(e.target.value);
     const onContentChange = e => setContent(e.target.value);
+    const onAuthorChange = e => setUserId(e.target.value);
 
+
+    // error here
     const savePost = () => {
         if (title && content) {
             dispatch(
@@ -28,6 +30,9 @@ const AddPostForm = () => {
             setTitle('')
             setContent('')
         }
+        // console.log(title)
+        // console.log(content)
+        // console.log(userId)
     };
 
     const userOptions = users.map(user => (
@@ -67,19 +72,19 @@ const AddPostForm = () => {
                         {userOptions}
                     </select>
                 </div>
-               <div className='flex flex-col'>
-                    <label htmlFor='postTitle'>Content </label>
-                    <textarea 
-                        className='border rounded-lg outline-none text-slate-800 p-2'
-                        name="postContent" 
-                        id="postContent"
-                        value={content}
-                        onChange={onContentChange}
-                    >
-                    </textarea>
-               </div>
+                <div className='flex flex-col'>
+                        <label htmlFor='postTitle'>Content </label>
+                        <textarea 
+                            className='border rounded-lg outline-none text-slate-800 p-2'
+                            name="postContent" 
+                            id="postContent"
+                            value={content}
+                            onChange={onContentChange}
+                        >
+                        </textarea>
+                </div>
                 <button 
-                    className={canSave ? 'border p-2 rounded-lg mt-4 mb-4' : ' p-2 rounded-lg bg-slate-400 mt-4 mb-4'} 
+                    className={canSave ? 'border p-2 rounded-lg mt-4 mb-4' : 'p-2 rounded-lg bg-slate-400 mt-4 mb-4'} 
                     type='button' 
                     onClick={savePost}
                     disabled={!canSave}
